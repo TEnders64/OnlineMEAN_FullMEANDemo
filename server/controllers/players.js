@@ -3,13 +3,14 @@ var Player = mongoose.model('Player');
 module.exports = (function(){
   return {
     index: function(req, res){
-      Player.find({}, function(err, players){
-        if (err){
-          console.log(err);
-        }else{
-          res.json(players);
-        }
-      })
+      Player.find({}).populate('_team')
+        .exec(function(err, players){
+          if (err){
+            console.log(err);
+          }else{
+            res.json(players);
+          }
+        })
     },
     create: function(req, res){
       var player = new Player(req.body);
